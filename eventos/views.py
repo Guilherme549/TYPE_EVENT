@@ -1,48 +1,56 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from . models import Evento
+from .models import Evento
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.messages import constants
 
-@login_required # faz com que os usuarios so acessem esta url se estivem logados
+
+@login_required  # faz com que os usuarios so acessem esta url se estivem logados
 def novo_evento(request):
     if request.method == "GET":
-        return render(request, 'novo_evento.html')
+        return render(request, "novo_evento.html")
     elif request.method == "POST":
-        nome = request.POST.get('nome')
-        descricao = request.POST.get('descricao')
-        data_inicio = request.POST.get('data_inicio')
-        data_termino = request.POST.get('data_termino')
-        carga_horaria = request.POST.get('carga_horaria')
+        nome = request.POST.get("nome")
+        descricao = request.POST.get("descricao")
+        data_inicio = request.POST.get("data_inicio")
+        data_termino = request.POST.get("data_termino")
+        carga_horaria = request.POST.get("carga_horaria")
 
-        cor_principal = request.POST.get('cor_principal')
-        cor_secundaria = request.POST.get('cor_secundaria')
-        cor_fundo = request.POST.get('cor_fundo')
-        
-        logo = request.FILES.get('logo')
+        cor_principal = request.POST.get("cor_principal")
+        cor_secundaria = request.POST.get("cor_secundaria")
+        cor_fundo = request.POST.get("cor_fundo")
+
+        logo = request.FILES.get("logo")
 
         evento = Evento(
-                criador=request.user,
-                nome=nome,
-                descricao=descricao,
-                data_inicio=data_inicio,
-                data_termino=data_termino,
-                carga_horaria=carga_horaria,
-                cor_principal=cor_principal,
-                cor_secundaria=cor_secundaria,
-                cor_fundo=cor_fundo,
-                logo=logo,
-            )
-        
+            criador=request.user,
+            nome=nome,
+            descricao=descricao,
+            data_inicio=data_inicio,
+            data_termino=data_termino,
+            carga_horaria=carga_horaria,
+            cor_principal=cor_principal,
+            cor_secundaria=cor_secundaria,
+            cor_fundo=cor_fundo,
+            logo=logo,
+        )
+
         evento.save()
 
-        messages.add_message(request, constants.SUCCESS, 'Evento cadastrado com sucesso.')
-        return redirect(reverse('novo_evento'))
-    
+        messages.add_message(
+            request, constants.SUCCESS, "Evento cadastrado com sucesso."
+        )
+        return redirect(reverse("novo_evento"))
+
 
 def gerenciar_evento(request):
     if request.method == "GET":
-        eventos = Evento.objects.filter(criador=request.user) #aqui pega os eventos que o usuarios logado criou
-        return render(request, 'gerenciar_evento.html')
+        nome = request.GET.get('nome')
+        eventos = Evento.objects.filter(criador=request.user)
+        if nome:
+            eventos = eventos
+        eventos = Evento.objects.filter(nome__contains=nome)  # aqui pega os eventos que o usuarios logado criou
+        print(eventos) 
+        return render(request, "gerenciar_evento.html", {'eventos': eventos})
