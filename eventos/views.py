@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .models import Evento
+from .models import Evento, Certificado
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.messages import constants
@@ -15,7 +15,7 @@ from django.conf import settings
 @login_required  # faz com que os usuarios so acessem esta url se estivem logados
 def novo_evento(request):
     if request.method == "GET":
-        return render(request, "novo_evento.html")
+        return render(request, "novo_evento.html") 
     elif request.method == "POST":
         nome = request.POST.get("nome")
         descricao = request.POST.get("descricao")
@@ -103,3 +103,12 @@ def gerar_csv(request, id):
             write.writerow(x)
 
     return redirect(f'/media/{token}')
+
+
+def certificados_evento(request, id):
+    evento = get_object_or_404(Evento, id=id)
+    if not evento.criador == request.user:
+        raise Http404('Este evento não é seu')
+    if request.method == "GET":
+        qtd_certificados = evento.participantes.all().count() - Certificado.objects.filter(evento=evento).count()
+        return render(request, 'certificados_evento.html', {'qtd_certificados': qtd_certificados})
