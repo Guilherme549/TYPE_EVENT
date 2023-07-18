@@ -8,6 +8,10 @@ from django.urls import reverse
 from django.contrib import auth
 
 
+def inicio(request):
+    return render(request, 'inicio.html')
+
+
 def cadastro(request):
     if request.method == "GET":
         return render(request, 'cadastro.html')
