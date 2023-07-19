@@ -3,15 +3,15 @@ Site para criar eventos e gerar certificados
 
 # AO CLONAR OU BAIXAR O REPOSITÓRIO EXECUTE OS COMANDOS ABAIXO:
 
- 1. Ative o ambiente virtual venv usando o seguinte comando:
+ 1. Ative o ambiente virtual venv:
     - .\venv\Scripts\activate
 
 
-2. Crie as migrações do banco de dados com o seguinte comando:
+2. Crie as migrações do banco de dados:
     - python manage.py makemigrations
 
 
-3. Aplique as migrações no banco de dados com o seguinte comando:
+3. Aplique as migrações no banco de dados:
     - python manage.py migrate
 
 
