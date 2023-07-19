@@ -15,7 +15,7 @@ Site para criar eventos e gerar certificados
     - python manage.py migrate
 
 
-4. Execute o projeto com o seguinte comando:
+4. Execute o projeto:
     - python .\manage.py runserver
   
 
