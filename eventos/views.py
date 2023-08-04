@@ -68,6 +68,7 @@ def gerenciar_evento(request):
 
 @login_required
 def inscrever_evento(request, id):
+        
     # Validar inscrição
     evento = get_object_or_404(Evento, id=id)
     if request.method == "GET":
