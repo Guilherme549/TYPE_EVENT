@@ -16,7 +16,7 @@ Site para criar eventos e gerar certificados
 
 
 4. Execute o projeto:
-    - python .\manage.py runserver
+    - python manage.py runserver
   
 
 5. Acesse o site no navegador usando o seguinte endereço:
